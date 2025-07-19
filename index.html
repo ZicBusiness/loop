@@ -4,7 +4,405 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curiosidades do Mundo Geek - Por Harmonique!</title>
-<link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            color: #00ff00;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(45deg, #111, #222);
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.3);
+            border: 2px solid #333;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title {
+            font-size: 3em;
+            color: #00ffff;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+            to { text-shadow: 0 0 40px rgba(0, 255, 255, 1); }
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        
+        .briefing {
+            background: linear-gradient(135deg, #001100, #002200);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #00ff00;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+        
+        .articles-container {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .article-card {
+            background: linear-gradient(135deg, #111, #222);
+            border: 2px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .article-card:hover {
+            border-color: #00ff00;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+            transform: translateY(-5px);
+        }
+        
+        .article-header {
+            padding: 25px;
+            background: linear-gradient(45deg, #222, #333);
+            border-bottom: 2px solid #00ff00;
+            position: relative;
+        }
+        
+        .article-number {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 4em;
+            color: rgba(0, 255, 0, 0.2);
+            font-weight: bold;
+        }
+        
+        .article-title {
+            font-size: 1.8em;
+            color: #00ffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        
+        .article-description {
+            color: #ffd700;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .tag {
+            background: #333;
+            color: #00ff00;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid #00ff00;
+        }
+        
+        .expand-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #00ff00;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .expand-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+        
+        .article-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #0a0a0a;
+        }
+        
+        .article-content.expanded {
+            max-height: 5000px;
+        }
+        
+        .article-card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        .article-card.expanded .expand-indicator {
+            color: #ff6b6b;
+        }
+        
+        .content-wrapper {
+            padding: 30px;
+        }
+        
+        .section {
+            margin: 25px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #111, #000);
+            position: relative;
+        }
+        
+        .concept {
+            border-left: 4px solid #00ff00;
+        }
+        
+        .example {
+            border-left: 4px solid #ffd700;
+        }
+        
+        .interactive {
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .code-block {
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 3px solid #00ffff;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: "💻 CODE";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: #222;
+            color: #00ffff;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+        }
+        
+        .button {
+            background: #333;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 8px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .button:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        
+        .output {
+            background: #000;
+            border: 2px solid #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            min-height: 120px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+        
+        .step {
+            margin: 8px 0;
+            padding: 8px;
+            background: #222;
+            border-radius: 4px;
+            border-left: 3px solid #00ff00;
+        }
+        
+        .highlight {
+            background: #444;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #00ffff;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            background: #222;
+            color: #00ff00;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover {
+            background: #333;
+        }
+        
+        .tab.active {
+            background: #00ff00;
+            color: #000;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(45deg, #111, #222);
+            border-radius: 15px;
+            border: 1px solid #333;
+            margin-top: 50px;
+        }
+        
+        .footer-text {
+            color: #ffd700;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        
+        .author {
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 1.3em;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        
+        .recursive-call {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .base-case {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        
+        .return-value {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .warning {
+            background: #331100;
+            border: 1px solid #ff6600;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #ff9900;
+        }
+        
+        .tree-visual {
+            font-family: monospace;
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2em;
+            }
+            
+            .article-title {
+                font-size: 1.5em;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                margin-right: 0;
+                border-radius: 8px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -256,7 +654,288 @@ Clique em "Demonstrar Pilha" para ver como funciona!
         </div>
     </div>
     
-<script src="js/script.js"></script>
+    <script>
+        let currentInterval;
+        
+        function toggleArticle(card) {
+            const content = card.querySelector('.article-content');
+            const isExpanded = card.classList.contains('expanded');
+            
+            // Fechar todos os outros artigos
+            document.querySelectorAll('.article-card').forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('expanded');
+                    otherCard.querySelector('.article-content').classList.remove('expanded');
+                }
+            });
+            
+            // Toggle do artigo atual
+            if (isExpanded) {
+                card.classList.remove('expanded');
+                content.classList.remove('expanded');
+            } else {
+                card.classList.add('expanded');
+                content.classList.add('expanded');
+            }
+        }
+        
+        function openRecursionTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+        
+        function limparOutput(outputId) {
+            document.getElementById(outputId).innerHTML = "Output limpo! Pronto para nova execução.";
+        }
+        
+        // Funções para o artigo de acrônimos
+        function demonstrarNormal() {
+            const output = document.getElementById('acronymOutput');
+            output.innerHTML = '';
+            
+            const passos = [
+                'Resolvendo HTML...',
+                'H = HyperText ✓',
+                'T = Text ✓', 
+                'M = Markup ✓',
+                'L = Language ✓',
+                '<span style="color: #00ff00;">✅ SUCESSO: HTML = HyperText Markup Language</span>'
+            ];
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < passos.length) {
+                    output.innerHTML += `<div class="step">${passos[i]}</div>`;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 600);
+        }
+        
+        function demonstrarRecursivo() {
+            const output = document.getElementById('acronymOutput');
+            output.innerHTML = '';
+            let contador = 0;
+            
+            output.innerHTML = '<div class="step">Tentando resolver GNU...</div>';
+            
+            currentInterval = setInterval(() => {
+                contador++;
+                const depth = '  '.repeat(contador);
+                
+                if (contador <= 8) {
+                    output.innerHTML += `<div class="step">${depth}G = GNU (que é GNU\'s Not Unix)</div>`;
+                    output.innerHTML += `<div class="step">${depth}Preciso resolver GNU novamente...</div>`;
+                } else if (contador === 9) {
+                    output.innerHTML += `<div class="step recursive-call">🔄 LOOP INFINITO DETECTADO!</div>`;
+                    output.innerHTML += `<div class="step recursive-call">❌ IMPOSSÍVEL RESOLVER!</div>`;
+                    output.innerHTML += `<div class="step">😅 E aí está a piada!</div>`;
+                    clearInterval(currentInterval);
+                }
+            }, 400);
+        }
+        
+        function pararLoop() {
+            if (currentInterval) {
+                clearInterval(currentInterval);
+                const output = document.getElementById('acronymOutput');
+                output.innerHTML += '<div class="step recursive-call">🛑 Loop interrompido!</div>';
+            }
+        }
+        
+        // Funções para o artigo de recursão
+        function calcularFatorial() {
+            const n = parseInt(document.getElementById('factorialInput').value);
+            const output = document.getElementById('recursionOutput');
+            
+            if (n < 0 || n > 8) {
+                output.innerHTML = "Por favor, digite um número entre 0 e 8!";
+                return;
+            }
+            
+            output.innerHTML = `Calculando fatorial de ${n}...\n\n`;
+            
+            let steps = [];
+            
+            function fatorialComLog(num, profundidade = 0) {
+                const indent = '  '.repeat(profundidade);
+                
+                if (num <= 1) {
+                    steps.push(`${indent}fatorial(${num}) = <span class="base-case">1</span> (caso base)`);
+                    return 1;
+                } else {
+                    steps.push(`${indent}fatorial(${num}) = ${num} * fatorial(${num-1})`);
+                    const resultado = num * fatorialComLog(num - 1, profundidade + 1);
+                    steps.push(`${indent}fatorial(${num}) = <span class="return-value">${resultado}</span>`);
+                    return resultado;
+                }
+            }
+            
+            const resultado = fatorialComLog(n);
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < steps.length) {
+                    output.innerHTML += `<div class="step">${steps[i]}</div>`;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    output.innerHTML += `\n<div class="step return-value">🎯 RESULTADO FINAL: ${n}! = ${resultado}</div>`;
+                }
+            }, 800);
+        }
+        
+        function calcularFibonacci() {
+            const n = parseInt(document.getElementById('fibInput').value);
+            const output = document.getElementById('recursionOutput');
+            
+            if (n < 0 || n > 10) {
+                output.innerHTML = "Por favor, digite um número entre 0 e 10!";
+                return;
+            }
+            
+            output.innerHTML = `Calculando Fibonacci(${n})...\n\n`;
+            
+            let steps = [];
+            let callCount = 0;
+            
+            function fibonacciComLog(num, profundidade = 0) {
+                const indent = '  '.repeat(profundidade);
+                callCount++;
+                
+                if (num <= 1) {
+                    steps.push(`${indent}fibonacci(${num}) = <span class="base-case">${num}</span> (caso base)`);
+                    return num;
+                } else {
+                    steps.push(`${indent}fibonacci(${num}) = fibonacci(${num-1}) + fibonacci(${num-2})`);
+                    const resultado = fibonacciComLog(num - 1, profundidade + 1) + fibonacciComLog(num - 2, profundidade + 1);
+                    steps.push(`${indent}fibonacci(${num}) = <span class="return-value">${resultado}</span>`);
+                    return resultado;
+                }
+            }
+            
+            const resultado = fibonacciComLog(n);
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < Math.min(steps.length, 20)) { // Limitar para não sobrecarregar
+                    output.innerHTML += `<div class="step">${steps[i]}</div>`;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    if (steps.length > 20) {
+                        output.innerHTML += `\n<div class="step">... (${steps.length - 20} passos omitidos)</div>`;
+                    }
+                    output.innerHTML += `\n<div class="step return-value">🎯 RESULTADO: Fibonacci(${n}) = ${resultado}</div>`;
+                    output.innerHTML += `<div class="step">📊 Total de chamadas recursivas: ${callCount}</div>`;
+                }
+            }, 300);
+        }
+        
+        function iniciarCountdown() {
+            const n = parseInt(document.getElementById('countdownInput').value);
+            const output = document.getElementById('recursionOutput');
+            
+            if (n < 1 || n > 8) {
+                output.innerHTML = "Por favor, digite um número entre 1 e 8!";
+                return;
+            }
+            
+            output.innerHTML = `Iniciando countdown recursivo de ${n}...\n\n`;
+            
+            let steps = [];
+            
+            function countdownComLog(num, profundidade = 0) {
+                const indent = '  '.repeat(profundidade);
+                
+                if (num <= 0) {
+                    steps.push(`${indent}<span class="base-case">🚀 LANÇAMENTO!</span> (caso base)`);
+                    return;
+                } else {
+                    steps.push(`${indent}countdown(${num}) = ${num}...`);
+                    countdownComLog(num - 1, profundidade + 1);
+                    steps.push(`${indent}countdown(${num}) finalizado`);
+                }
+            }
+            
+            countdownComLog(n);
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < steps.length) {
+                    output.innerHTML += `<div class="step">${steps[i]}</div>`;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 600);
+        }
+        
+        function demonstrarPilha() {
+            const output = document.getElementById('stackOutput');
+            output.innerHTML = 'Demonstrando como a pilha de execução funciona...\n\n';
+            
+            const pilhaSteps = [
+                '📚 PILHA DE EXECUÇÃO - fatorial(4)',
+                '',
+                '1️⃣ Chamada: fatorial(4)',
+                '   ├─ Empilha: fatorial(4)',
+                '   ├─ Chama: fatorial(3)',
+                '',
+                '2️⃣ Chamada: fatorial(3)', 
+                '   ├─ Empilha: fatorial(3)',
+                '   ├─ Chama: fatorial(2)',
+                '',
+                '3️⃣ Chamada: fatorial(2)',
+                '   ├─ Empilha: fatorial(2)', 
+                '   ├─ Chama: fatorial(1)',
+                '',
+                '4️⃣ Chamada: fatorial(1)',
+                '   ├─ Empilha: fatorial(1)',
+                '   ├─ <span class="base-case">CASO BASE!</span> Retorna 1',
+                '',
+                '🔄 DESEMPILHANDO...',
+                '',
+                '↩️ fatorial(1) retorna 1',
+                '   └─ Desempilha: fatorial(1)',
+                '',
+                '↩️ fatorial(2) = 2 * 1 = 2',
+                '   └─ Desempilha: fatorial(2)',
+                '',
+                '↩️ fatorial(3) = 3 * 2 = 6', 
+                '   └─ Desempilha: fatorial(3)',
+                '',
+                '↩️ fatorial(4) = 4 * 6 = 24',
+                '   └─ Desempilha: fatorial(4)',
+                '',
+                '<span class="return-value">✅ RESULTADO FINAL: 24</span>',
+                '<span class="return-value">📚 Pilha vazia - execução completa!</span>'
+            ];
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < pilhaSteps.length) {
+                    output.innerHTML += `<div class="step">${pilhaSteps[i]}</div>`;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 400);
+        }
+    </script>
 </body>
 </html>
 
